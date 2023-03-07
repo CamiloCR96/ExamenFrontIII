@@ -1,34 +1,50 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import Card from './components/Card'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState({
+    nombre: '',
+    cancionFav: '',
+    cantanteFav: ''
+})
+const [show, setShow] = useState(false)
+const [err, setErr] = useState(false)
+
+const handleSubmit = (event) => {
+    event.preventDefault()
+    
+    if(user.nombre.length >= 3 && user.nombre.charAt(0) !== " " &&  user.cancionFav.length >=6) {
+        setShow(true)
+        setErr(false)
+    } else {
+        setErr(true)
+        
+    }
+
+}
 
   return (
+    <>
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+     
+     <form onSubmit={handleSubmit}>
+            <label>Nombre completo </label>
+            <input type="text" value={user.nombre} onChange={(e) => setUser({...user, nombre: e.target.value})}/><br />
+            <label>Cancion favorita </label>
+            <input type="text" value={user.cancionFav} onChange={(e) => setUser({...user, cancionFav: e.target.value})}/><br />
+            <label>Cantante de tu cancion favorita </label>
+            <input type="text" value={user.cantanteFav} onChange={(e) => setUser({...user, cantanteFav: e.target.value})}/><br />
+            <button>Enviar</button><br /><br />
+            {err && 'Por favor chequea que la informacion sea correcta'}
+        </form>
+        
+        {show  && <Card nombre={user.nombre} cancionFav={user.cancionFav} cantanteFav={user.cantanteFav} />}  
     </div>
+    </>
   )
 }
+
+    
 
 export default App
